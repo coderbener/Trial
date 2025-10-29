@@ -66,9 +66,11 @@ export default function Navbar() {
             <Link href="#about" className="block text-foreground/80 hover:text-foreground">
               About
             </Link>
-            <Button className="w-full bg-primary hover:bg-primary/90 text-primary-foreground rounded-full">
-              Join Now
-            </Button>
+            <Link href="/login" className="relative z-50">
+  <button data-slot="button" className="inline-flex items-center justify-center gap-2 ...">
+    Join Now
+  </button>
+</Link>
           </div>
         )}
       </div>
