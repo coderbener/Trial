@@ -41,11 +41,11 @@ export default function Navbar() {
 
           {/* Desktop CTA Button */}
 <div className="hidden md:block">
-  <Link href="/login">
-    <Button className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-full px-6">
-      Join Now
-    </Button>
-  </Link>
+<Link href="/login" className="relative z-50">
+  <button data-slot="button" className="inline-flex items-center justify-center gap-2 ...">
+    Join Now
+  </button>
+</Link>
 </div>
 
           {/* Mobile Menu Button */}
