@@ -19,7 +19,7 @@ export default function Hero() {
             </h1>
 
             <p className="text-lg text-foreground/70 leading-relaxed text-balance">
-              BenetS is India's community platform for aspiring professionals, offering hands-on virtual internships,
+              BentS is India's community platform for aspiring professionals, offering hands-on virtual internships,
               real-world labs, and a direct path to the industry.
             </p>
 
