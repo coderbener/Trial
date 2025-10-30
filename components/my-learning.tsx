@@ -1,28 +1,28 @@
+// src/components/my-learning.tsx
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 
-export function MyLearning() {
-  const programs = [
-    {
-      id: 1,
-      title: "Virtual Internship: SOC Analyst",
-      progress: 45,
-      week: 2,
-      totalWeeks: 4,
-      image: "/soc-analyst-dashboard.jpg",
-    },
-  ]
+// 1. Define the props interface to expect 'courses'
+interface MyLearningProps {
+  courses: any[]; // Expects an array named 'courses'
+}
+
+// 2. Accept the 'courses' prop in the function
+export default function MyLearning({ courses }: MyLearningProps) {
+  
+  // 3. REMOVED the hardcoded 'programs' variable. We now use the 'courses' prop.
 
   return (
-    <div className="ml-64">
+    // 4. REMOVED 'ml-64' - this will be handled by the main layout
+    <div>
       <div className="mb-6">
         <h2 className="text-2xl font-bold text-foreground">Active Missions: Your Enrolled Programs</h2>
         <p className="text-foreground/60 text-sm mt-1">Continue your current learning paths</p>
       </div>
 
-      {programs.length > 0 ? (
+      {courses.length > 0 ? (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {programs.map((program) => (
+          {courses.map((program) => ( // Use 'courses' prop
             <Card
               key={program.id}
               className="bg-card border-border/50 overflow-hidden hover:border-primary/50 transition-colors"

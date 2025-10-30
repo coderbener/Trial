@@ -4,7 +4,7 @@ import { useState } from "react"
 import { supabase } from "@/lib/supabaseClient" // Import Supabase client
 import { useRouter } from 'next/navigation' // Import router for redirection
 
-export function LoginModal() {
+export default function LoginModal() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [isLoading, setIsLoading] = useState(false)

@@ -10,7 +10,7 @@ interface StatItem {
 }
 
 interface QuickStatsProps {
-  stats: /*StatItem[];*/any;
+  stats: StatItem[];
 }
 
 // 2. Change function name to QuickStats and accept the 'stats' prop

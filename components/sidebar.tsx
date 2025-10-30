@@ -4,11 +4,18 @@ import Link from "next/link"
 import { Home, Book, Compass, Award, Briefcase as Certificate, HelpCircle, LogOut } from "lucide-react"
 import { useState } from "react"
 
-interface SidebarProps {
+// interface SidebarProps {
+//   userName: string
+// }
+type SidebarProps = {
+  open: boolean
+  onToggle: () => void
   userName: string
+  userEmail?: string // optional, since it might be undefined
 }
 
-export function Sidebar({ userName }: SidebarProps) {
+
+export default function Sidebar({ userName }: SidebarProps) {
   const [activeLink, setActiveLink] = useState("dashboard")
 
   const navLinks = [

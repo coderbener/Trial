@@ -1,44 +1,28 @@
+// src/components/explore-programs.tsx
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 
-export function ExplorePrograms() {
-  const programs = [
-    {
-      id: 1,
-      title: "Ethical Hacking Fundamentals",
-      description: "Learn the basics of ethical hacking and penetration testing",
-      duration: "6 Weeks",
-      level: "Beginner",
-      image: "/ethical-hacking-course.jpg",
-    },
-    {
-      id: 2,
-      title: "Network Security Essentials",
-      description: "Master network protocols and security implementations",
-      duration: "8 Weeks",
-      level: "Intermediate",
-      image: "/network-security-concept.png",
-    },
-    {
-      id: 3,
-      title: "Incident Response & Forensics",
-      description: "Respond to security incidents and conduct digital forensics",
-      duration: "10 Weeks",
-      level: "Advanced",
-      image: "/incident-response.jpg",
-    },
-  ]
+// 1. Define the props interface to expect 'courses'
+interface ExploreProgramsProps {
+  courses: any[];
+}
+
+// 2. Accept the 'courses' prop in the function
+export default function ExplorePrograms({ courses }: ExploreProgramsProps) {
+
+  // 3. REMOVED the hardcoded 'programs' variable. We now use the 'courses' prop.
 
   return (
-    <div className="ml-64">
+    // 4. REMOVED 'ml-64'
+    <div>
       <div className="mb-6">
         <h2 className="text-2xl font-bold text-foreground">New Missions Available: Explore Programs</h2>
         <p className="text-foreground/60 text-sm mt-1">Discover new learning opportunities</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {programs.map((program) => (
+        {courses.map((program) => ( // Use 'courses' prop
           <Card
             key={program.id}
             className="bg-card border-border/50 overflow-hidden hover:border-primary/50 transition-colors flex flex-col"

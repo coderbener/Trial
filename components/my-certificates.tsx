@@ -1,18 +1,22 @@
+// src/components/my-certificates.tsx
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Download } from "lucide-react"
 
-export function MyCertificates() {
-  const certificates = [
-    {
-      id: 1,
-      title: "Certificate: SOC Analyst Virtual Internship",
-      dateAwarded: "October 15, 2024",
-    },
-  ]
+// 1. Define the props interface to expect 'certificates'
+interface MyCertificatesProps {
+  certificates: any[];
+}
+
+// 2. Accept the 'certificates' prop in the function
+export default function MyCertificates({ certificates }: MyCertificatesProps) {
+  
+  // 3. REMOVED the hardcoded 'certificates' variable.
+  //    We now use the 'certificates' prop passed from the dashboard.
 
   return (
-    <div className="ml-64">
+    // 4. REMOVED 'ml-64' - this will be handled by the main layout
+    <div>
       <div className="mb-6">
         <h2 className="text-2xl font-bold text-foreground">Mission Complete: Certificates Awarded</h2>
         <p className="text-foreground/60 text-sm mt-1">Your official credentials</p>
@@ -20,7 +24,7 @@ export function MyCertificates() {
 
       {certificates.length > 0 ? (
         <div className="space-y-4">
-          {certificates.map((cert) => (
+          {certificates.map((cert) => ( // Use 'certificates' prop
             <Card
               key={cert.id}
               className="bg-card border-border/50 p-6 flex items-center justify-between hover:border-primary/50 transition-colors"
