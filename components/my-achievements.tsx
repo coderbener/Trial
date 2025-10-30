@@ -1,6 +1,6 @@
 import { Card } from "@/components/ui/card"
 
-export function MyAchievements() {
+export default function MyAchievements() {
   const badges = [
     { id: 1, name: "First Steps", icon: "🎯", earned: true },
     { id: 2, name: "Network Master", icon: "🌐", earned: true },

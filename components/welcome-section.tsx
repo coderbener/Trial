@@ -2,7 +2,7 @@ interface WelcomeSectionProps {
   userName: string
 }
 
-export function WelcomeSection({ userName }: WelcomeSectionProps) {
+export default function WelcomeSection({ userName }: WelcomeSectionProps) {
   return (
     <div className="ml-64">
       <h1 className="text-4xl font-bold text-balance">
