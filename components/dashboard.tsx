@@ -1,26 +1,20 @@
 "use client"; 
 
-
 import { useState } from "react";
-// --- CORRECTED IMPORTS ---
+// 1. IMPORT THE ICONS YOU ARE USING
+import { Zap, Shield, Award } from "lucide-react";
 
-// Named Imports (keep the braces)
-import { Sidebar } from "./sidebar";
-import { MyLearning } from "./my-learning";
-import { ExplorePrograms } from "./explore-programs";
-import { MyCertificates } from "./my-certificates";
-
-// Default Imports (remove the braces)
+// Import your components
+import  Sidebar  from "./sidebar";
 import WelcomeHeader from "./welcome-section"; 
 import QuickStats from "./stats-bar";     
+import  MyLearning  from "./my-learning"; 
 import Achievements from "./my-achievements"; 
+import  ExplorePrograms  from "./explore-programs"; 
 import Footer from "./footer";                   
-// --- END CORRECTED IMPORTS ---
-// --- END CORRECTED IMPORTS ---
-// --- END CORRECTED IMPORTS ---
-// --- END CORRECTED IMPORTS ---
+import  MyCertificates  from "./my-certificates";
 
-// Define the props this component expects to receive from page.tsx
+// Define the props this component expects from page.tsx
 interface DashboardLayoutProps {
     userName: string;
     userEmail?: string;
@@ -29,8 +23,28 @@ interface DashboardLayoutProps {
 export default function DashboardLayout({ userName, userEmail }: DashboardLayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  // --- Placeholder Data (Components will still need props) ---
-  const stats = { xp: 0, level: "Level 1", badgesEarned: 0, totalBadges: 0 };
+  // --- Placeholder Data ---
+  const placeholderStats = [
+    {
+      label: "XP Earned",
+      value: "2,500",
+      icon: Zap, // This will now work
+      color: "from-primary to-primary/50",
+    },
+    {
+      label: "Current Rank",
+      value: "Level 3: Cyber Cadet",
+      icon: Shield, // This will now work
+      color: "from-accent to-accent/50",
+    },
+    {
+      label: "Badges Collected",
+      value: "5 / 20",
+      icon: Award, // This will now work
+      color: "from-primary/80 to-accent/80",
+    },
+  ];
+  
   const enrolledCourses: any[] = [];
   const availableCourses: any[] = [];
   const badges: any[] = [];
@@ -50,11 +64,14 @@ export default function DashboardLayout({ userName, userEmail }: DashboardLayout
         <div className="min-h-screen flex flex-col">
           <div className="flex-1 p-4 md:p-6 lg:p-8 space-y-6 md:space-y-8">
             <WelcomeHeader userName={userName} />
-            <QuickStats />
-            <MyLearning />
-            <Achievements /> {/* Pass props */}
-            <ExplorePrograms />
-            <MyCertificates /> {/* Pass props */}
+
+            {/* 2. FIX: Pass 'placeholderStats' to the 'stats' prop */}
+            <QuickStats stats={placeholderStats} /> 
+            
+            <MyLearning courses={enrolledCourses} />
+            <Achievements badges={badges} /> 
+            <ExplorePrograms courses={availableCourses} />
+            <MyCertificates certificates={certificates} />
           </div>
           <Footer />
         </div>
