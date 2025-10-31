@@ -12,49 +12,46 @@ export default function LoginModal() {
   const [error, setError] = useState<string | null>(null) // State for errors
   const router = useRouter() // Initialize router
 
+  // src/components/login-modal.tsx
+
+  // ... (keep all your imports and useState hooks) ...
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
-    setError(null) // Clear previous errors
+    setError(null) 
 
     try {
       if (isSignUp) {
-        // Sign Up Logic
-        const { error: signUpError } = await supabase.auth.signUp({
-          email,
-          password,
-        })
+        // --- Sign Up Logic ---
+        const { error: signUpError } = await supabase.auth.signUp({ email, password })
         if (signUpError) throw signUpError
-        
-        // Let the user know to check their email (if verification is on)
-        alert("Sign up successful! Please check your email for a verification link.")
-        setIsSignUp(false) // Switch back to login form
-        setIsLoading(false) // Stop loading
+        alert("Sign up successful! Please check your email to verify.")
+        setIsSignUp(false); 
+        setIsLoading(false);
 
       } else {
-        // Log In Logic
+        // --- Log In Logic ---
         const { error: signInError } = await supabase.auth.signInWithPassword({
           email,
           password,
         })
         if (signInError) throw signInError
         
-        // --- THIS IS THE FIX ---
-        // 1. Refresh the router to update the server session/cookies
-        router.refresh(); 
-        // 2. Now, push to the dashboard. This will work.
-        router.push('/dashboard');
-        // --- END OF FIX ---
-        
-        // On successful login, we don't set isLoading(false) 
-        // because the page is navigating away.
+        // --- THIS IS THE NEW FIX ---
+        // Instead of router.push, we force a full-page reload.
+        // This guarantees the browser sends the new cookie to the server.
+        window.location.href = '/dashboard';
+        // --- END OF NEW FIX ---
       }
     } catch (err: any) {
       console.error("Auth error:", err)
       setError(err.message || "An unexpected error occurred.")
-      setIsLoading(false) // Stop loading ONLY if there is an error
+      setIsLoading(false) 
     } 
   }
+
+  // ... (keep the rest of your return() code) ...
 
   return (
     <div className="w-full max-w-md">
