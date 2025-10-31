@@ -99,48 +99,146 @@
 //   );
 // }
 
+
+
+
+
+// "use client";
+
+// import { useEffect, useState } from "react";
+// import { supabase } from "@/lib/supabaseClient";
+// import { useRouter } from "next/navigation";
+
+// export default function DashboardPage() {
+//   const [user, setUser] = useState<any>(null);
+//   const router = useRouter();
+
+//   useEffect(() => {
+//     const getSession = async () => {
+//       const { data, error } = await supabase.auth.getSession();
+//       if (error) {
+//         console.error("Session fetch error:", error.message);
+//         router.push("/login");
+//         return;
+//       }
+
+//       if (!data.session) {
+//         router.push("/login");
+//         return;
+//       }
+
+//       setUser(data.session.user);
+//     };
+
+//     getSession();
+//   }, [router]);
+
+//   if (!user) {
+//     return (
+//       <div className="flex justify-center items-center h-screen text-lg">
+//         Loading your dashboard...
+//       </div>
+//     );
+//   }
+
+//   return (
+//     <div className="p-8">
+//       <h1 className="text-2xl font-bold">Welcome, {user.email}</h1>
+//       <p className="mt-2 text-gray-600">You are now logged in 🎉</p>
+//     </div>
+//   );
+// }
+
+//   "use client";
+
+// import { useEffect, useState } from "react";
+// import { supabase } from "@/lib/supabaseClient";
+// import { useRouter } from "next/navigation";
+// import Dashboard from "@/components/dashboard"; // 👈 your main dashboard layout
+
+// export default function DashboardPage() {
+//   const [user, setUser] = useState<any>(null);
+//   const router = useRouter();
+
+//   useEffect(() => {
+//     const getSession = async () => {
+//       const { data, error } = await supabase.auth.getSession();
+//       if (error) {
+//         console.error("Session fetch error:", error.message);
+//         router.push("/login");
+//         return;
+//       }
+
+//       if (!data.session) {
+//         router.push("/login");
+//         return;
+//       }
+
+//       setUser(data.session.user);
+//     };
+
+//     getSession();
+//   }, [router]);
+
+//   if (!user) {
+//     return (
+//       <div className="flex justify-center items-center h-screen text-lg">
+//         Loading your dashboard...
+//       </div>
+//     );
+//   }
+
+//   // ✅ Once logged in, render your dashboard component
+//   return <Dashboard user={user} />;
+// }
+
+
 "use client";
 
 import { useEffect, useState } from "react";
-import { supabase } from "@/lib/supabaseClient";
 import { useRouter } from "next/navigation";
+import { supabase } from "lib/supabaseClient";
+import DashboardLayout from "@/components/dashboard";
 
 export default function DashboardPage() {
-  const [user, setUser] = useState<any>(null);
   const router = useRouter();
+  const [user, setUser] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const getSession = async () => {
-      const { data, error } = await supabase.auth.getSession();
-      if (error) {
-        console.error("Session fetch error:", error.message);
-        router.push("/login");
-        return;
-      }
+    // Fetch current user
+    const getUser = async () => {
+      const {
+        data: { user },
+        error,
+      } = await supabase.auth.getUser();
 
-      if (!data.session) {
-        router.push("/login");
-        return;
+      if (error || !user) {
+        router.push("/login"); // redirect if not logged in
+      } else {
+        setUser(user);
       }
-
-      setUser(data.session.user);
+      setLoading(false);
     };
 
-    getSession();
+    getUser();
   }, [router]);
 
-  if (!user) {
+  if (loading) {
     return (
       <div className="flex justify-center items-center h-screen text-lg">
-        Loading your dashboard...
+        Loading dashboard...
       </div>
     );
   }
 
+  if (!user) return null;
+
+  // ✅ Pass props correctly to DashboardLayout
   return (
-    <div className="p-8">
-      <h1 className="text-2xl font-bold">Welcome, {user.email}</h1>
-      <p className="mt-2 text-gray-600">You are now logged in 🎉</p>
-    </div>
+    <DashboardLayout
+      userName={user.user_metadata?.full_name || "User"}
+      userEmail={user.email}
+    />
   );
 }
