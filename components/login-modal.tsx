@@ -32,16 +32,16 @@ export default function LoginModal() {
 
       } else {
         // --- Log In Logic ---
-        const { error: signInError } = await supabase.auth.signInWithPassword({
-          email,
-          password,
-        })
-        if (signInError) throw signInError
-        
-        // --- THIS IS THE NEW FIX ---
-        // Instead of router.push, we force a full-page reload.
-        // This guarantees the browser sends the new cookie to the server.
-        window.location.href = '/dashboard';
+        const { data, error: signInError } = await supabase.auth.signInWithPassword({
+  email,
+  password,
+});
+if (signInError) throw signInError;
+
+console.log("✅ Logged in user:", data.user);
+router.push('/dashboard');
+router.refresh();
+
         // --- END OF NEW FIX ---
       }
     } catch (err: any) {
