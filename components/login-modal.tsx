@@ -25,9 +25,12 @@ export default function LoginModal() {
           password,
         })
         if (signUpError) throw signUpError
-        // Optional: Show a message like "Check your email to verify!"
-        alert("Sign up successful! Please check your email to verify.")
-        // Keep them on the login page or redirect to a specific verification page
+        
+        // Let the user know to check their email (if verification is on)
+        alert("Sign up successful! Please check your email for a verification link.")
+        setIsSignUp(false) // Switch back to login form
+        setIsLoading(false) // Stop loading
+
       } else {
         // Log In Logic
         const { error: signInError } = await supabase.auth.signInWithPassword({
@@ -35,15 +38,22 @@ export default function LoginModal() {
           password,
         })
         if (signInError) throw signInError
-        // On successful login, redirect to dashboard
-        router.push('/dashboard')
+        
+        // --- THIS IS THE FIX ---
+        // 1. Refresh the router to update the server session/cookies
+        router.refresh(); 
+        // 2. Now, push to the dashboard. This will work.
+        router.push('/dashboard');
+        // --- END OF FIX ---
+        
+        // On successful login, we don't set isLoading(false) 
+        // because the page is navigating away.
       }
     } catch (err: any) {
       console.error("Auth error:", err)
       setError(err.message || "An unexpected error occurred.")
-    } finally {
-      setIsLoading(false)
-    }
+      setIsLoading(false) // Stop loading ONLY if there is an error
+    } 
   }
 
   return (
@@ -101,6 +111,7 @@ export default function LoginModal() {
         {/* Toggle Sign Up/Log In */}
         <div className="mt-6 text-center">
           <button
+            type="button" // Add type="button" to prevent form submission
             onClick={() => {
                 setIsSignUp(!isSignUp);
                 setError(null); // Clear errors when toggling
