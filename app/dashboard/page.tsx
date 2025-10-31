@@ -30,29 +30,63 @@
 //     />
 //   );
 // }
-"use client";
+// export const dynamic = 'force-dynamic';
+// "use client";
 
-import { useEffect, useState } from "react";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import { useRouter } from "next/navigation";
-import DashboardLayout from "../../components/dashboard";
+// import { useEffect, useState } from "react";
+// import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+// import { useRouter } from "next/navigation";
+// import DashboardLayout from "../../components/dashboard";
 
-export default function DashboardPage() {
-  const router = useRouter();
-  const supabase = createClientComponentClient();
-  const [session, setSession] = useState<any>(null);
+// export default function DashboardPage() {
+//   const router = useRouter();
+//   const supabase = createClientComponentClient();
+//   const [session, setSession] = useState<any>(null);
 
-  useEffect(() => {
-    supabase.auth.getSession().then(({ data }) => {
-      setSession(data.session);
-      if (!data.session) router.push("/login");
-    });
-  }, []);
+//   useEffect(() => {
+//     supabase.auth.getSession().then(({ data }) => {
+//       setSession(data.session);
+//       if (!data.session) router.push("/login");
+//     });
+//   }, []);
 
-  if (!session) return <p>Loading...</p>;
+//   if (!session) return <p>Loading...</p>;
 
+//   const userName = session.user?.user_metadata?.full_name || session.user?.email || "Agent";
+//   const userEmail = session.user?.email;
+
+//   return <DashboardLayout userName={userName} userEmail={userEmail} />;
+// }
+// src/app/dashboard/page.tsx
+
+export const dynamic = 'force-dynamic'; // <-- THIS IS THE FIX
+
+import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
+import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
+import DashboardLayout from '../../components/dashboard'; 
+
+export default async function DashboardPage() {
+  const cookieStore = cookies();
+  const supabase = createServerComponentClient({ cookies: () => cookieStore });
+
+  // Get the user session
+  const { data: { session } } = await supabase.auth.getSession();
+
+  // If no user, redirect to login
+  if (!session) {
+    redirect('/login');
+  }
+
+  // Get the user's name
   const userName = session.user?.user_metadata?.full_name || session.user?.email || "Agent";
   const userEmail = session.user?.email;
 
-  return <DashboardLayout userName={userName} userEmail={userEmail} />;
+  // Render your layout and pass the name down as a prop
+  return (
+    <DashboardLayout 
+      userName={userName} 
+      userEmail={userEmail} 
+    />
+  );
 }
